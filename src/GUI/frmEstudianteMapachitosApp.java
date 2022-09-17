@@ -26,22 +26,23 @@ public class frmEstudianteMapachitosApp extends javax.swing.JFrame {
     Escritura escritura;
     EstudianteArrayList estudiante;
     DefaultTableModel modelo;
-
+    
     public frmEstudianteMapachitosApp() {
         initComponents();
         estudiante = new EstudianteArrayList();
         lectura = new Lectura();
         modelo = (DefaultTableModel) tblEstudiantes.getModel();
         LlenarTabla();
+        setLocationRelativeTo(null);
     }
-
+    
     private void LimpiarTabla() {
         int filas = tblEstudiantes.getRowCount();
         for (int i = 0; i < filas; i++) {
             modelo.removeRow(0);
         }
     }
-
+    
     private void LlenarTabla() {
         lectura.DefinirPath("C:/ED/21TE0284.txt");
         estudiante.Copiar(lectura.ObtenerEstudiantesArrayList());
@@ -51,7 +52,7 @@ public class frmEstudianteMapachitosApp extends javax.swing.JFrame {
             modelo.addRow(new Object[]{e.getMatricula(), e.getNombre(), e.getCalificacion(), e.getEstatus()});
         }
     }
-
+    
     private void Escribir() {
         escritura = new Escritura();
         escritura.DefinirPath("C:/ED/21TE0284.txt", false);
@@ -325,16 +326,16 @@ public class frmEstudianteMapachitosApp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAgregarEstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAgregarEstudiantesActionPerformed
-
+        
         if (estudiante.BuscarEstudiante(tfMatricula.getText()) != true) {
             String matricula = tfMatricula.getText();
             String nombre = tfNombre.getText();
             if (Byte.parseByte(tfCalificacion.getText()) < 0 || Byte.parseByte(tfCalificacion.getText()) > 100) {
                 JOptionPane.showMessageDialog(null, "Ingrese una calificación del 0-100");
-
+                
             } else {
                 byte calificacion = Byte.parseByte(tfCalificacion.getText());
-
+                
                 Estudiante p = new Estudiante(matricula, nombre, calificacion);
                 estudiante.AgregarEstudiante(p);
                 Escribir();
@@ -345,7 +346,7 @@ public class frmEstudianteMapachitosApp extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ya existe una matricula llamada:" + tfMatricula.getText());
             JOptionPane.showMessageDialog(null, "ESTUDIANTE: " + "\n " + estudiante.ObtenerEstudiante(tfMatricula.getText()));
         }
-
+        
 
     }//GEN-LAST:event_jbAgregarEstudiantesActionPerformed
 
@@ -356,7 +357,7 @@ public class frmEstudianteMapachitosApp extends javax.swing.JFrame {
         String matri = tblEstudiantes.getValueAt(nf, 0).toString();
         String nom = tblEstudiantes.getValueAt(nf, 1).toString();
         short calificacion = (byte) tblEstudiantes.getValueAt(nf, 2);
-
+        
         tfMatricula.setText(String.valueOf(matri));
         tfNombre.setText(nom);
         tfCalificacion.setText(String.valueOf(calificacion));
@@ -371,13 +372,13 @@ public class frmEstudianteMapachitosApp extends javax.swing.JFrame {
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActualizarActionPerformed
-
+        
         int index = tblEstudiantes.getSelectedRow(); //indica la fila que seleccionas
         if (index == -1) {
             JOptionPane.showMessageDialog(null, "No se ha seleccionado ningun alumno de la tabla");
         } else {
             int nf = tblEstudiantes.getSelectedRow();
-
+            
             String matri = tblEstudiantes.getValueAt(nf, 0).toString();
             String nombre = tfNombre.getText();
             if (Byte.parseByte(tfCalificacion.getText()) < 0 || Byte.parseByte(tfCalificacion.getText()) > 100) {
@@ -385,20 +386,20 @@ public class frmEstudianteMapachitosApp extends javax.swing.JFrame {
             } else {
                 byte calif = Byte.parseByte(tfCalificacion.getText());
                 int indice = tblEstudiantes.getSelectedRow();
-
+                
                 Estudiante p = new Estudiante(matri, nombre, calif);
                 estudiante.ActualizarEstudiante(indice, p);
                 JOptionPane.showMessageDialog(null, "Actualizado");
                 Escribir();
                 LlenarTabla();
             }
-
+            
         }
     }//GEN-LAST:event_jbActualizarActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
         String matricula = JOptionPane.showInputDialog("Ingrese una matricula");
-
+        
         Estudiante e = estudiante.ObtenerEstudiante(matricula);
         if (estudiante.ConocerEstatus(matricula) == "Bueno" || estudiante.ConocerEstatus(matricula) == "Excelente") {
             int decision;
@@ -412,7 +413,7 @@ public class frmEstudianteMapachitosApp extends javax.swing.JFrame {
                     LlenarTabla();
                     JOptionPane.showMessageDialog(null, "Eliminado");
                 } else {
-
+                    
                     JOptionPane.showMessageDialog(null, "Estudiante no encontrado");
                 }
             }
